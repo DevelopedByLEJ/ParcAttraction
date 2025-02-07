@@ -17,5 +17,5 @@ export class AccueilComponent {
   constructor(public attractionService: AttractionService)
   {}
   
-  public attractions: Observable<AttractionInterface[]> = this.attractionService.getVisibleAttraction()
+  public attractions: Observable<AttractionInterface[]> = this.attractionService.getAllVisibleAttraction()
 }
