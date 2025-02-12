@@ -1,28 +1,31 @@
 DROP TABLE IF EXISTS attraction;
 
 CREATE TABLE attraction (
-    attraction_id int auto_increment,
-    primary key(attraction_id),
-    nom varchar(255) not null,
-    description varchar(255) not null,
-    difficulte int,
-    visible bool default true
+    attraction_id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    difficulte INT CHECK (difficulte BETWEEN 0 AND 5),
+    visible BOOL DEFAULT TRUE
 );
 
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-    users_id int auto_increment,
-    primary key(users_id),
-    name varchar(255) not null,
-    password varchar(255) not null
+    users_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 DROP TABLE IF EXISTS critique;
 
 CREATE TABLE critique (
-  critique_id int auto_increment,
-  primary key(critique_id),
-  objet varchar(255) not null,
-  description varchar(255) not null
+    critique_id INT AUTO_INCREMENT PRIMARY KEY,
+    texte VARCHAR(255) NOT NULL,
+    note INT NOT NULL CHECK (note BETWEEN 0 AND 5),
+    nom VARCHAR(255) NOT NULL,
+    prenom VARCHAR(255) NOT NULL,
+    attraction_id INT NOT NULL,
+
+    CONSTRAINT fk_attraction FOREIGN KEY (attraction_id)
+    REFERENCES attraction(attraction_id) ON DELETE CASCADE
 );

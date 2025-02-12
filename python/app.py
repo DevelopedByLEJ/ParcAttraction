@@ -102,6 +102,9 @@ def addCritique():
         #return checkToken
 
     json = request.get_json()
+    if "attraction_id" not in json:
+        return jsonify({"message": "Erreur : attraction_id est requis."}), 400
+        
     retour = critique.add_critique(json)
     if (retour):
         return jsonify({"message": "Element ajouté.", "result": retour}), 200
@@ -114,9 +117,12 @@ def deleteCritique(index):
     #checkToken = user.check_token(request)
     #if (checkToken != True):
         #return checkToken
-
-    json = request.get_json()
     
     if (critique.delete_critique(index)):
         return "Element supprimé.", 200
     return jsonify({"message": "Erreur lors de la suppression."}), 500
+
+@app.get('/critique')
+def getAllCritique():
+    result = critique.get_all_critique()
+    return result, 200
