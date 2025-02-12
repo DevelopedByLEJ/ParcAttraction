@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+import mariadb
 import request.request as req
 import controller.auth.auth as user
 import controller.attraction as attraction
+import controller.critique as critique
 
 app = Flask(__name__)
 CORS(app)
@@ -17,9 +19,9 @@ def hello_world():
 def addAttraction():
     print("okok", flush=True)
     # Fonction vérif token
-    checkToken = user.check_token(request)
-    if (checkToken != True):
-        return checkToken
+    #checkToken = user.check_token(request)
+    #if (checkToken != True):
+        #return checkToken
 
     json = request.get_json()
     retour = attraction.add_attraction(json)
@@ -72,3 +74,49 @@ def login():
 
     result = jsonify({"token": user.encode_auth_token(list(records[0])[0]), "name": json['name']})
     return result, 200
+
+#Test Connexion DB
+@app.get('/test-db')
+def test_db():
+    try:
+        conn = mariadb.connect(
+            user="mysqlusr",
+            password="mysqlpwd",
+            host="database",
+            port=3306,
+            database="parc"
+        )
+        cur = conn.cursor()
+        cur.execute("SELECT 1")  # Juste un test
+        return {"message": "Connexion OK"}, 200
+    except mariadb.Error as e:
+        return {"error": str(e)}, 500
+
+#Critique
+@app.post('/critique')
+def addCritique():
+    print("okok", flush=True)
+    # Fonction vérif token
+    #checkToken = user.check_token(request)
+    #if (checkToken != True):
+        #return checkToken
+
+    json = request.get_json()
+    retour = critique.add_critique(json)
+    if (retour):
+        return jsonify({"message": "Element ajouté.", "result": retour}), 200
+    return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
+
+@app.delete('/critique/<int:index>')
+def deleteCritique(index):
+
+    # Fonction vérif token
+    #checkToken = user.check_token(request)
+    #if (checkToken != True):
+        #return checkToken
+
+    json = request.get_json()
+    
+    if (critique.delete_critique(index)):
+        return "Element supprimé.", 200
+    return jsonify({"message": "Erreur lors de la suppression."}), 500
