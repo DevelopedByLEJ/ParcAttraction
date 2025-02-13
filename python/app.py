@@ -126,3 +126,8 @@ def deleteCritique(index):
 def getAllCritique():
     result = critique.get_all_critique()
     return result, 200
+
+@app.get('/attraction/visible/critique')
+def getAttractionCritique():
+    result = attraction.get_all_visible_attraction_with_critique()
+    return result, 200

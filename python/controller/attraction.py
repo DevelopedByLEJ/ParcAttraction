@@ -52,3 +52,40 @@ def delete_attraction(id):
     req.delete_from_db("DELETE FROM attraction WHERE attraction_id = ?", (id,))
 
     return True
+
+def get_all_visible_attraction_with_critique():
+    requete = """
+    SELECT a.attraction_id, a.nom, a.description, a.difficulte, 
+           c.critique_id, c.texte AS critique, c.note, c.nom AS auteur_nom, c.prenom AS auteur_prenom
+    FROM attraction a
+    LEFT JOIN critique c ON a.attraction_id = c.attraction_id
+    WHERE a.visible = 1
+    ORDER BY a.attraction_id, c.critique_id;
+    """
+
+    result = req.select_from_db(requete)
+    
+    print("Résultat SQL:", result, flush=True)  # Affiche le format des données
+
+    attractions = {}
+    for row in result:
+        print("Ligne retournée:", row, flush=True)  # Vérifie la structure des données
+        attraction_id = row["attraction_id"]  # Modifier ici (avant: row[0])
+        
+        if attraction_id not in attractions:
+            attractions[attraction_id] = {
+                "id": attraction_id,
+                "nom": row["nom"],
+                "description": row["description"],
+                "difficulte": row["difficulte"],
+                "critiques": []
+            }
+        if row["critique_id"] is not None:
+            attractions[attraction_id]["critiques"].append({
+                "id": row["critique_id"],
+                "texte": row["critique"],
+                "note": row["note"],
+                "auteur": f"{row['auteur_nom']} {row['auteur_prenom']}"
+            })
+
+    return list(attractions.values())

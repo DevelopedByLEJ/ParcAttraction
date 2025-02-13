@@ -3,51 +3,35 @@
     <mat-card-title>Bienvenue sur le site internet du parc d'attraction</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="attraction-title">
-      <div class="attraction">
-        <span>Nom de l'attraction</span>
-        <span>Description de l'attraction</span>
-        <span>Difficulté de l'attraction / 5</span>
-      </div>
-    </div>
-    <ng-container *ngFor="let attraction of attractions | async;">
-      <div class="attraction"><mat-card>
+    
+    <!-- Liste des attractions -->
+    <div *ngFor="let attraction of attractions | async" class="attraction-card">
+      <mat-card>
         <mat-card-header>
-          <mat-card-title>Bienvenue sur le site internet du parc d'attraction</mat-card-title>
+          <mat-card-title>{{ attraction.nom }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="attraction-title">
-            <div class="attraction">
-              <span>Nom de l'attraction</span>
-              <span>Description de l'attraction</span>
-              <span>Difficulté de l'attraction / 5</span>
-            </div>
-          </div>
-          <ng-container *ngFor="let attraction of attractions | async;">
-            <div class="attraction">
-              <span>{{attraction.nom}}</span>
-              <span>{{attraction.description}}</span>
-              <span>{{attraction.difficulte}} / 5</span>
-            </div>
-      
-            <!-- Affichage des critiques -->
-            <div *ngIf="attraction.critiques.length > 0">
-              <h4>Critiques :</h4>
-              <div *ngFor="let critique of attraction.critiques">
-                <p><strong>{{ critique.auteur }}</strong>: {{ critique.texte }} (Note: {{ critique.note }}/5)</p>
-              </div>
-            </div>
-            <div *ngIf="attraction.critiques.length === 0">
-              <p>Aucune critique pour cette attraction.</p>
-            </div>
-          </ng-container>
+          <p><strong>Description :</strong> {{ attraction.description }}</p>
+          <p><strong>Difficulté :</strong> {{ attraction.difficulte }} / 5</p>
+
+          <!-- Liste des critiques -->
+          <h3>Critiques :</h3>
+          <mat-list *ngIf="attraction.critiques.length > 0; else noCritique">
+            <mat-list-item *ngFor="let critique of attraction.critiques">
+              <span class="star-rating">
+                <mat-icon *ngFor="let star of getStarRating(critique.note || 0)" [inline]="true">{{ star }}</mat-icon>
+              </span>
+              <strong>{{ critique.auteur }}</strong> ({{ critique.note || 0 }}/5) : "{{ critique.texte }}"
+            </mat-list-item>            
+          </mat-list>
+
+          <ng-template #noCritique>
+            <p>Aucune critique pour cette attraction.</p>
+          </ng-template>
+
         </mat-card-content>
       </mat-card>
-      
-        <span>{{attraction.nom}}</span>
-        <span>{{attraction.description}}</span>
-        <span>{{attraction.difficulte}} / 5</span>
-      </div>
-    </ng-container>
+    </div>
+
   </mat-card-content>
 </mat-card>

@@ -1,19 +1,23 @@
-.attraction-title {
-  font-size: 18px;
-  font-weight: 500;
-  background-color: darkgrey;
-  width: fit-content;
-  margin-top: 25px;
+.attraction-card {
+  margin: 15px 0;
 }
-.attraction {
+
+mat-card {
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+mat-list-item {
   display: flex;
   align-items: center;
-  column-gap: 25px;
-  width: fit-content;
+  gap: 8px;
+}
 
-  border-bottom: solid 1px grey;
-  span {
-    padding: 5px;
-    width: 250px;
-  }
+mat-icon {
+  color: gold;
+}
+
+.star-rating {
+  margin-right: 10px;  /* Ajuste l'espace entre les étoiles et le texte */
 }
