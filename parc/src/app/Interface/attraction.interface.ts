@@ -1,7 +1,7 @@
 import { CritiqueInterface } from "./critique.interface"
 
 export interface AttractionInterface {
-    attraction_id: number | null,
+    attraction_id: number,
     nom: string,
     description: string, 
     difficulte: number,

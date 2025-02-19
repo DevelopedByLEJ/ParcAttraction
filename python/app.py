@@ -96,19 +96,21 @@ def test_db():
 @app.post('/critique')
 def addCritique():
     print("okok", flush=True)
-    # Fonction vérif token
-    #checkToken = user.check_token(request)
-    #if (checkToken != True):
-        #return checkToken
 
     json = request.get_json()
-    if "attraction_id" not in json:
+    print("Données reçues :", json, flush=True)  # Vérifie ce qui arrive
+
+    if not json:
+        return jsonify({"message": "Erreur : Aucune donnée reçue."}), 400
+    
+    if "attraction_id" not in json or json['attraction_id'] is None:
         return jsonify({"message": "Erreur : attraction_id est requis."}), 400
-        
+
     retour = critique.add_critique(json)
-    if (retour):
+    if retour:
         return jsonify({"message": "Element ajouté.", "result": retour}), 200
     return jsonify({"message": "Erreur lors de l'ajout.", "result": retour}), 500
+
 
 @app.delete('/critique/<int:index>')
 def deleteCritique(index):

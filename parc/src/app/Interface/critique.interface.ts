@@ -1,5 +1,5 @@
 export interface CritiqueInterface {
-  id: number | null,
+  id?: number,
   attraction_id: number | null,
   texte: string | null,
   note: number | null,

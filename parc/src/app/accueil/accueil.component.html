@@ -5,33 +5,57 @@
   <mat-card-content>
     
     <!-- Liste des attractions -->
-    <div *ngFor="let attraction of attractions | async" class="attraction-card">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ attraction.nom }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>Description :</strong> {{ attraction.description }}</p>
-          <p><strong>Difficulté :</strong> {{ attraction.difficulte }} / 5</p>
+<div *ngFor="let attraction of attractions | async" class="attraction-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ attraction.nom }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Description :</strong> {{ attraction.description }}</p>
+      <p><strong>Difficulté :</strong> {{ attraction.difficulte }} / 5</p>
 
-          <!-- Liste des critiques -->
-          <h3>Critiques :</h3>
-          <mat-list *ngIf="attraction.critiques.length > 0; else noCritique">
-            <mat-list-item *ngFor="let critique of attraction.critiques">
-              <span class="star-rating">
-                <mat-icon *ngFor="let star of getStarRating(critique.note || 0)" [inline]="true">{{ star }}</mat-icon>
-              </span>
-              <strong>{{ critique.auteur }}</strong> ({{ critique.note || 0 }}/5) : "{{ critique.texte }}"
-            </mat-list-item>            
-          </mat-list>
+      <!-- Liste des critiques -->
+      <h3>Critiques :</h3>
+      <mat-list *ngIf="attraction.critiques.length > 0; else noCritique">
+        <mat-list-item *ngFor="let critique of attraction.critiques">
+          <span class="star-rating">
+            <mat-icon *ngFor="let star of getStarRating(critique.note || 0)" [inline]="true">{{ star }}</mat-icon>
+          </span>
+          <strong>{{ critique.auteur }}</strong> ({{ critique.note || 0 }}/5) : "{{ critique.texte }}"
+        </mat-list-item>            
+      </mat-list>
 
-          <ng-template #noCritique>
-            <p>Aucune critique pour cette attraction.</p>
-          </ng-template>
+      <ng-template #noCritique>
+        <p>Aucune critique pour cette attraction.</p>
+      </ng-template>
 
-        </mat-card-content>
-      </mat-card>
-    </div>
+      <!-- Bouton pour ajouter une critique -->
+      <button mat-button (click)="toggleForm(attraction.attraction_id)">Ajouter une critique</button>
+
+      <!-- Formulaire pour ajouter une critique -->
+      <div *ngIf="showFormForAttraction[attraction.attraction_id]">
+        <mat-form-field>
+          <mat-label>Auteur</mat-label>
+          <input matInput [(ngModel)]="newCritique.auteur">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Note</mat-label>
+          <input matInput type="number" min="0" max="5" [(ngModel)]="newCritique.note">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Critique</mat-label>
+          <textarea matInput [(ngModel)]="newCritique.texte"></textarea>
+        </mat-form-field>
+      
+        <button mat-button color="primary" (click)="submitCritique(attraction.attraction_id)">Envoyer</button>
+        <button mat-button color="warn" (click)="toggleForm(attraction.attraction_id)">Annuler</button>
+      </div>
+      
+    </mat-card-content>
+  </mat-card>
+</div>
 
   </mat-card-content>
 </mat-card>
