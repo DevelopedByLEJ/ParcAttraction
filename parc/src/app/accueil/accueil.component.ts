@@ -72,13 +72,20 @@ export class AccueilComponent {
   submitCritique(attractionId: number | null) {
     if (attractionId !== null) {
       this.newCritique.attraction_id = attractionId;
-      console.log("Envoi de la critique :", this.newCritique);
-      this.critiqueService.addCritique(this.newCritique).subscribe(response => {
-        console.log("Critique ajoutée :", response);
-        this.toggleForm(attractionId);
-      }, error => {
-        console.error("Erreur lors de l'ajout de la critique :", error);
-      });
+      console.log("Attraction ID avant l'envoi :", attractionId);
+      console.log("Données envoyées :", this.newCritique);
+  
+      this.critiqueService.addCritique(this.newCritique).subscribe(
+        response => {
+          console.log("Critique ajoutée :", response);
+          this.toggleForm(attractionId);
+        },
+        error => {
+          console.error("Erreur lors de l'ajout de la critique :", error);
+        }
+      );
+    } else {
+      console.error("attractionId est null ! Impossible d'envoyer la critique.");
     }
-  }  
+  }    
 }

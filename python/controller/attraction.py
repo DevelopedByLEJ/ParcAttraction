@@ -74,7 +74,7 @@ def get_all_visible_attraction_with_critique():
         
         if attraction_id not in attractions:
             attractions[attraction_id] = {
-                "id": attraction_id,
+                "attraction_id": attraction_id,
                 "nom": row["nom"],
                 "description": row["description"],
                 "difficulte": row["difficulte"],
@@ -82,7 +82,7 @@ def get_all_visible_attraction_with_critique():
             }
         if row["critique_id"] is not None:
             attractions[attraction_id]["critiques"].append({
-                "id": row["critique_id"],
+                "critique_id": row["critique_id"],
                 "texte": row["critique"],
                 "note": row["note"],
                 "auteur": f"{row['auteur_nom']} {row['auteur_prenom']}"

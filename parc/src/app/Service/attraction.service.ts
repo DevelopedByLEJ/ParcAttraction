@@ -34,6 +34,7 @@ export class AttractionService {
   public getAllVisibleAttractionCritique(): Observable<AttractionInterface[]> {
     const url = "http://127.0.0.1:5000/attraction/visible/critique";
     const data = this.dataService.getData(url);
+    console.log(data)
     return data as Observable<AttractionInterface[]>;
   }
 }

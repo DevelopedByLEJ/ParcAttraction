@@ -8,7 +8,7 @@
 <div *ngFor="let attraction of attractions | async" class="attraction-card">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>{{ attraction.nom }}</mat-card-title>
+      <mat-card-title>{{attraction.attraction_id}} {{ attraction.nom }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <p><strong>Description :</strong> {{ attraction.description }}</p>
